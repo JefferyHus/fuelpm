@@ -20,7 +20,10 @@
 	 * FPM Classes
 	 */
 	'Fpm\Fpm'								=> __DIR__ . '/classes/fpm.php',
-
+	'Fpm\Fpm_Driver'						=> __DIR__ . '/classes/fpm/driver.php',
+	'Fpm\Fpm_Driver_Inbox'					=> __DIR__ . '/classes/fpm/driver/inbox.php',
+	'Fpm\Fpm_Driver_Outbox'					=> __DIR__ . '/classes/fpm/driver/outbox.php',
+	
 	/**
 	 * FPM Exceptions
 	 */
@@ -30,4 +33,5 @@
 	'Fpm\InvalidAttachmentsException'		=> __DIR__ . '/classes/fpm.php',
 	'Fpm\InvalidEmailException'				=> __DIR__ . '/classes/fpm.php',
 	'Fpm\AuthLoginDriverNotFoundException'	=> __DIR__ . '/classes/fpm.php',
+	'Fpm\FpmInvalidField'					=> __DIR__ . '/classes/fpm/inbox.php'
 ));

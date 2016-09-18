@@ -30,6 +30,12 @@ class AuthLoginDriverNotFoundException extends \FuelException {}
 class Fpm
 {
 	/**
+	 * Personal messages status
+	 */
+	const READ		= true;
+	const UNREAD 	= false;
+
+	/**
 	 * Instance for singleton usage.
 	 */
 	public static $_instance = null;
@@ -43,6 +49,11 @@ class Fpm
 	 * The sender email
 	 */
 	protected $from 	= null;
+
+	/**
+	 * Message headers
+	 */
+	protected $headers = array();
 
 	/**
 	 * To recipients list
@@ -244,26 +255,45 @@ class Fpm
 	}
 
 	/**
+	 * Sets custom headers.
+	 *
+	 * @param   string|array    $header  Header type or array of headers
+	 * @param   string          $value   Header value
+	 * @return  $this
+	 */
+	public function header($header, $value = null)
+	{
+		if(is_array($header))
+		{
+			foreach($header as $_header => $_value)
+			{
+				empty($_value) or $this->headers[$_header] = $_value;
+			}
+		}
+		else
+		{
+			empty($value) or $this->headers[$header] = $value;
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Selects all recieved emails
 	 * @param  string $email The current user's email or another email
 	 * @return bool|array    flase if nothing has been found, array of recieved emails
 	 */
 	public static function inbox($email = null){
-		// Check whether the Auth package is installed or not
-		if( is_null( $email ) )
-			static::check();
+		return \Fpm_Driver::forge( $email, 'inbox' );
+	}
 
-		$email = is_null( $email ) ? \Auth::get('email') : $email;
-
-		$inbox = \DB::select_array( \Config::get('fpm.table_columns') )
-		->from( \Config::get('fpm.table_name') )
-		->where_open()
-		->where( \Config::get('fpm.recipient_attribute'), '=', $email )
-		->where_close()
-		->execute()
-		->as_array();
-
-		return empty( $inbox ) ? false : $inbox;
+	/**
+	 * Selects all sent emails
+	 * @param  string $email The current user's email or another email
+	 * @return bool|array    flase if nothing has been found, array of recieved emails
+	 */
+	public static function outbox($email = null){
+		return \Fpm_Driver::forge( $email, 'outbox' );
 	}
 
 	/**
@@ -372,8 +402,9 @@ class Fpm
 
 		$message = array(
 			'message_hash'	=> $this->hash,
-			'from_email'	=> $this->from,
-			'to_email'		=> $this->to,
+			'headers'		=> base64_encode( serialize( $this->headers ) ),
+			\Config::get('fpm.transmitter_attribute')	=> $this->from,
+			\Config::get('fpm.recipient_attribute')		=> $this->to,
 			'cc'			=> $this->cc,
 			'bcc'			=> $this->bcc,
 			'subject'		=> $this->subject,

@@ -47,12 +47,12 @@ return array(
 	/**
 	 * The attribute of the message recipient
 	 */
-	'recipient_attribute' => 'to_email',
+	'recipient_attribute' => 'receiver',
 
 	/**
 	 * The attribute of the message transmitter
 	 */
-	'transmitter_attribute' => 'from_email',
+	'transmitter_attribute' => 'sender',
 	/**
 	 * Default settings
 	 */
