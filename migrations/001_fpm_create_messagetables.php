@@ -19,8 +19,9 @@ class Fpm_Create_Messagetables
 			\DBUtil::create_table($table, array(
 				'id' => array('type' => 'int', 'constraint' => 11, 'auto_increment' => true),
 				'message_hash' => array('type' => 'varchar', 'constraint' => 255),
-				'from_email' => array('type' => 'varchar', 'constraint' => 50),
-				'to_email' => array('type' => 'varchar', 'constraint' => 50),
+				'headers' => array('type' => 'text'),
+				'receiver' => array('type' => 'varchar', 'constraint' => 50),
+				'sender' => array('type' => 'varchar', 'constraint' => 50),
 				'cc' => array('type' => 'varchar', 'constraint' => 255, 'default' => 0),
 				'bcc' => array('type' => 'varchar', 'constraint' => 255, 'default' => 0),
 				'subject' => array('type' => 'varchar', 'constraint' => 255),
