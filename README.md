@@ -62,7 +62,6 @@ Example:
 
 - Add the attachment functionality
 - Add the i18n configurable messages, so you can have your personal success and error messages in your language
-- Build the Inbox, Outbox and Draft classes to have a complex inner system
 
 ```
 
